@@ -1,9 +1,3 @@
-"""
-Funções utilitárias compartilhadas
-
-Helpers para escape de strings, truncamento de logs e outras utilidades.
-"""
-
 def escape_for_python_code(text: str) -> str:
     """
     Escapa string para injetar com segurança em código Python

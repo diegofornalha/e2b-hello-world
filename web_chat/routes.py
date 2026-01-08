@@ -9,8 +9,8 @@ from fastapi.responses import FileResponse
 from pathlib import Path
 
 from .models import ChatRequest, ChatResponse, HealthResponse
-from .sandbox_manager import SandboxManager
-from .config import MINIMAX_CONFIG
+from core.sandbox_manager import SandboxManager
+from core.config import MINIMAX_CONFIG
 
 router = APIRouter()
 CURRENT_DIR = Path(__file__).parent
@@ -26,7 +26,7 @@ async def home():
     Raises:
         HTTPException: 404 se index.html não existir
     """
-    html_path = CURRENT_DIR / "index.html"
+    html_path = CURRENT_DIR / "static" / "index.html"
     if not html_path.exists():
         raise HTTPException(
             status_code=404,

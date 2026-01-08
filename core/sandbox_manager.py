@@ -1,10 +1,3 @@
-"""
-Gerenciador centralizado de sandboxes E2B
-
-Este módulo encapsula toda a lógica de criação, configuração e
-execução de código em sandboxes E2B.
-"""
-
 from e2b_code_interpreter import Sandbox
 from .config import E2B_CONFIG, MINIMAX_CONFIG
 from .minimax_client import get_install_dependencies_code, get_chat_code

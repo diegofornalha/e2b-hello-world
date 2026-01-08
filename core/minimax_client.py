@@ -1,10 +1,3 @@
-"""
-Templates de código Python para executar no sandbox E2B
-
-Este módulo gera código Python que será executado dentro do sandbox
-para instalar dependências e chamar a API Minimax/Claude.
-"""
-
 from .config import MINIMAX_CONFIG
 from .utils import escape_for_python_code
 
@@ -43,6 +36,7 @@ client = Anthropic(
 resp = client.messages.create(
     model='{MINIMAX_CONFIG["model"]}',
     max_tokens={MINIMAX_CONFIG["max_tokens"]},
+    system="Responda sempre em português brasileiro (pt-BR). Use linguagem natural e clara. Código e termos técnicos podem permanecer em inglês quando apropriado.",
     messages=[{{"role": "user", "content": "{msg_safe}"}}]
 )
 

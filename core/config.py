@@ -1,10 +1,3 @@
-"""
-Configurações centralizadas do web_chat
-
-Este módulo carrega variáveis de ambiente e define configurações
-para Minimax API, E2B Sandbox e servidor HTTP.
-"""
-
 import os
 from pathlib import Path
 from dotenv import load_dotenv

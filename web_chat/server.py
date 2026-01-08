@@ -6,7 +6,7 @@ Script principal para iniciar o servidor uvicorn.
 """
 
 import uvicorn
-from .config import SERVER_CONFIG
+from core.config import SERVER_CONFIG
 
 def main():
     """Inicia servidor web com uvicorn"""
