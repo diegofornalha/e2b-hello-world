@@ -132,8 +132,12 @@ def chat_loop(sandbox):
             print("\n🤖 Claude: ", end="", flush=True)
             response = send_message_in_sandbox(sandbox, user_input)
 
-            # Exibir resposta
+            # Exibir resposta (pode conter markdown)
             print(response)
+            
+            # Mostrar indicador se contém markdown
+            if any(marker in response for marker in ['#', '**', '*', '`', '```', '[']):
+                print("\n💡 (Resposta contém formatação Markdown)")
 
         except KeyboardInterrupt:
             print("\n\n👋 Chat interrompido. Até logo!")
