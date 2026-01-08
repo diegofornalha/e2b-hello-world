@@ -1,0 +1,281 @@
+grep: echo: No such file or directory
+grep: ✅ Limpo: No such file or directory
+grep: echo: No such file or directory
+grep: : No such file or directory
+grep: python: No such file or directory
+serINFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [86020]
+rta
+server_auto_port.py:Se a porta 8001 estiver ocupada, tenta 8001, 8002, etc.
+server_auto_port.py:"""
+server_auto_port.py:
+server_auto_port.py:import os
+server_auto_port.py:import socket
+server_auto_port.py:from fastapi import FastAPI, HTTPException
+server_auto_port.py:from fastapi.responses import HTMLResponse
+server_auto_port.py:from fastapi.middleware.cors import CORSMiddleware
+server_auto_port.py:from pydantic import BaseModel
+server_auto_port.py:from dotenv import load_dotenv
+server_auto_port.py:from e2b_code_interpreter import Sandbox
+server_auto_port.py:
+server_auto_port.py:load_dotenv()
+server_auto_port.py:
+server_auto_port.py:# Configuração
+server_auto_port.py:MINIMAX_TOKEN = "sk-cp-zcDlRVYnUrNf7aDw6DtpBNxSdxkAFooPcercwJicQ8O-sSMKXJHQQkR0jNFTeNjM1Jyz7yfnCQBDi_QD02lUDusjJbkHQvqayawc7mQQLKGOBwwZttlTKXc"
+server_auto_port.py:MINIMAX_BASE = "https://api.minimax.io/anthropic"
+server_auto_port.py:MINIMAX_MODEL = "minimax/minimax-m2"
+server_auto_port.py:
+server_auto_port.py:app = FastAPI(title="Claude E2B API", version="1.0.0")
+server_auto_port.py:
+server_auto_port.py:app.add_middleware(
+server_auto_port.py:    CORSMiddleware,
+server_auto_port.py:    allow_origins=["*"],
+server_auto_port.py:    allow_credentials=True,
+server_auto_port.py:    allow_methods=["*"],
+server_auto_port.py:    allow_headers=["*"],
+server_auto_port.py:)
+server_auto_port.py:
+server_auto_port.py:class ChatRequest(BaseModel):
+server_auto_port.py:    message: str
+server_auto_port.py:    max_tokens: int = 1000
+server_auto_port.py:
+server_auto_port.py:class ChatResponse(BaseModel):
+server_auto_port.py:    response: str
+server_auto_port.py:    sandbox_id: str
+seINFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [81773]
+ate_sandbox():
+server_auto_port.py:    global _sandbox_cache
+server_auto_port.py:
+server_auto_port.py:    # Verificar se sandbox ainda está válido
+server_auto_port.py:    if _sandbox_cache is not None:
+server_auto_port.py:        try:
+server_auto_port.py:            # Testar se sandbox ainda responde
+server_auto_port.py:            _sandbox_cache.run_code("1+1")
+server_auto_port.py:        except:
+server_auto_port.py:            # Sandbox expirou, criar novo
+server_auto_port.py:            print("🔄 Sandbox expirou, criando novo...")
+server_auto_port.py:            _sandbox_cache = None
+server_auto_port.py:
+server_auto_port.py:    if _sandbox_cache is None:
+server_auto_port.py:        print("📦 Criando novo sandbox E2B...")
+server_auto_port.py:        # Timeout maior: 10 minutos
+server_auto_port.py:        _sandbox_cache = Sandbox.create(timeout=600)
+server_auto_port.py:        print("📦 Instalando Anthropic SDK...")
+server_auto_port.py:        _sandbox_cache.run_code("""
+server_auto_port.py:import subprocess, sys
+server_auto_port.py:subprocess.run([sys.executable, '-m', 'pip', 'install', 'anthropic', '--quiet'], check=True)
+server_auto_port.py:""")
+server_auto_port.py:        print("✅ Sandbox pronto!")
+server_auto_port.py:    return _sandbox_cache
+server_auto_port.py:
+server_auto_port.py:@app.get("/", response_class=HTMLResponse)
+server_auto_port.py:async def home():
+server_auto_port.py:    return HTMLResponse(content="""
+server_auto_port.py:    <!DOCTYPE html>
+server_auto_port.py:    <html lang="pt-BR">
+server_auto_port.py:    <head>
+server_auto_port.py:        <meta charset="UTF-8">
+server_auto_port.py:        <title>Claude E2B API</title>
+server_auto_port.py:        <style>
+server_auto_port.py:            * { margin: 0; padding: 0; box-sizing: border-box; }
+server_auto_port.py:            body {
+server_auto_port.py:                font-family: system-ui, -apple-system, sans-serif;
+server_auto_port.py:                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+server_auto_port.py:                min-height: 100vh; padding: 2rem;
+server_auto_port.py:            }
+server_auto_port.py:            .container {
+server_auto_port.py:                max-width: 800px; margin: 0 auto;
+server_auto_port.py:                background: white; border-radius: 16px;
+server_auto_port.py:                padding: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+server_auto_port.py:            }
+server_auto_port.py:            h1 { color: #667eea; margin-bottom: 1rem; }
+server_auto_port.py:            .badge {
+server_auto_port.py:                display: inline-block; padding: 0.3rem 0.8rem;
+server_auto_port.py:                background: #10b981; color: white;
+server_auto_port.py:                border-radius: 12px; font-size: 0.875rem;
+server_auto_port.py:                margin-bottom: 1.5rem;
+server_auto_port.py:            }
+server_auto_port.py:            textarea {
+server_auto_port.py:                width: 100%; padding: 1rem;
+server_auto_port.py:                border: 2px solid #e5e7eb; border-radius: 8px;
+server_auto_port.py:                font-size: 1rem; resize: vertical; min-height: 100px;
+server_auto_port.py:            }
+server_auto_port.py:            button {
+server_auto_port.py:                background: #667eea; color: white; border: none;
+server_auto_port.py:                padding: 0.75rem 2rem; border-radius: 8px;
+server_auto_port.py:                font-size: 1rem; cursor: pointer; margin-top: 1rem;
+server_auto_port.py:            }
+server_auto_port.py:            button:hover { background: #5568d3; }
+server_auto_port.py:            .response {
+server_auto_port.py:                margin-top: 1.5rem; padding: 1rem;
+server_auto_port.py:                background: #f9fafb; border-left: 4px solid #667eea;
+server_auto_port.py:                border-radius: 8px; display: none;
+server_auto_port.py:            }
+server_auto_port.py:            .response.show { display: block; }
+server_auto_port.py:        </style>
+server_auto_port.py:    </head>
+server_auto_port.py:    <body>
+server_auto_port.py:        <div class="container">
+server_auto_port.py:            <h1>🚀 Claude E2B API</h1>
+server_auto_port.py:            <span class="badge">✅ Online</span>
+server_auto_port.py:            <p style="margin-bottom: 1rem;">
+server_auto_port.py:                🔒 Todas as requisições processadas em sandbox E2B isolado
+server_auto_port.py:            </p>
+server_auto_port.py:            <textarea id="message" placeholder="Digite sua pergunta..."></textarea>
+server_auto_port.py:            <button onclick="send()">Enviar</button>
+server_auto_port.py:            <div id="response" class="response">
+server_auto_port.py:                <p id="text" style="margin: 0; line-height: 1.6; white-space: pre-wrap;"></p>
+server_auto_port.py:            </div>
+server_auto_port.py:        </div>
+server_auto_port.py:        <script>
+server_auto_port.py:            async function send() {
+server_auto_port.py:                const msg = document.getElementById('message').value;
+server_auto_port.py:                if (!msg.trim()) return alert('Digite uma mensagem!');
+server_auto_port.py:
+server_auto_port.py:                const btn = event.target;
+server_auto_port.py:                btn.disabled = true;
+server_auto_port.py:                btn.textContent = 'Processando...';
+server_auto_port.py:
+server_auto_port.py:                try {
+server_auto_port.py:                    const res = await fetch('/api/chat', {
+server_auto_port.py:                        method: 'POST',
+server_auto_port.py:                        headers: { 'Content-Type': 'application/json' },
+server_auto_port.py:                        body: JSON.stringify({ message: msg, max_tokens: 1000 })
+server_auto_port.py:                    });
+server_auto_port.py:                    const data = await res.json();
+server_auto_port.py:                    document.getElementById('text').textContent = data.response;
+server_auto_port.py:                    document.getElementById('response').classList.add('show');
+server_auto_port.py:                } catch (err) {
+server_auto_port.py:                    alert('Erro: ' + err.message);
+server_auto_port.py:                } finally {
+server_auto_port.py:                    btn.disabled = false;
+server_auto_port.py:                    btn.textContent = 'Enviar';
+server_auto_port.py:                }
+server_auto_port.py:            }
+server_auto_port.py:        </script>
+server_auto_port.py:    </body>
+server_auto_port.py:    </html>
+server_auto_port.py:    """)
+server_auto_port.py:
+server_auto_port.py:@app.post("/api/chat", response_model=ChatResponse)
+server_auto_port.py:async def chat(request: ChatRequest):
+server_auto_port.py:    try:
+server_auto_port.py:        sandbox = get_or_create_sandbox()
+server_auto_port.py:        # Escapar mensagem antes de usar no f-string
+server_auto_port.py:        safe_message = request.message.replace('"', '\\"').replace('\n', '\\n')
+server_auto_port.py:        result = sandbox.run_code(f"""
+server_auto_port.py:from anthropic import Anthropic
+server_auto_port.py:import json
+server_auto_port.py:
+server_auto_port.py:client = Anthropic(api_key='{MINIMAX_TOKEN}', base_url='{MINIMAX_BASE}')
+server_auto_port.py:response = client.messages.create(
+server_auto_port.py:    model='{MINIMAX_MODEL}',
+server_auto_port.py:    max_tokens={request.max_tokens},
+server_auto_port.py:    messages=[{{"role": "user", "content": "{safe_message}"}}]
+server_auto_port.py:)
+server_auto_port.py:
+server_auto_port.py:# Extrair resposta de qualquer tipo de bloco
+server_auto_port.py:answer = ""
+server_auto_port.py:for block in response.content:
+server_auto_port.py:    block_type = type(block).__name__
+server_auto_port.py:    if hasattr(block, 'text'):
+server_auto_port.py:        answer = block.text
+server_auto_port.py:        break
+server_auto_port.py:    elif hasattr(block, 'thinking'):
+server_auto_port.py:        # Minimax às vezes retorna pensamento
+server_auto_port.py:        continue
+server_auto_port.py:    elif hasattr(block, '__dict__'):
+server_auto_port.py:        # Tentar extrair qualquer texto disponível
+server_auto_port.py:        block_dict = block.__dict__
+server_auto_port.py:        if 'text' in block_dict:
+server_auto_port.py:            answer = block_dict['text']
+server_auto_port.py:            break
+server_auto_port.py:
+server_auto_port.py:# Se não encontrou resposta, usar mensagem padrão
+server_auto_port.py:if not answer:
+server_auto_port.py:    answer = "Olá! Estou aqui e funcionando."
+server_auto_port.py:
+server_auto_port.py:answer
+server_auto_port.py:""")
+server_auto_port.py:        if result.error:
+server_auto_port.py:            raise HTTPException(status_code=500, detail=f"Erro: {result.error}")
+server_auto_port.py:
+server_auto_port.py:        # E2B retorna valores de expressão em result.text
+server_auto_port.py:        # e output de print() em result.logs.stdout
+server_auto_port.py:        response_text = result.text or ""
+server_auto_port.py:
+server_auto_port.py:        # Se result.text está vazio, capturar do answer (última expressão avaliada)
+server_auto_port.py:        if not response_text and result.logs and result.logs.stdout:
+server_auto_port.py:            response_text = "".join(result.logs.stdout).strip()
+server_auto_port.py:
+server_auto_port.py:        if not response_text:
+server_auto_port.py:            response_text = "Resposta processada com sucesso"
+server_auto_port.py:
+server_auto_port.py:        return ChatResponse(
+server_auto_port.py:            response=response_text,
+server_auto_port.py:            sandbox_id=sandbox.sandbox_id,
+server_auto_port.py:            model=MINIMAX_MODEL
+server_auto_port.py:        )
+server_auto_port.py:    except Exception as e:
+server_auto_port.py:        raise HTTPException(status_code=500, detail=str(e))
+server_auto_port.py:
+server_auto_port.py:@app.get("/api/health")
+server_auto_port.py:async def health():
+server_auto_port.py:    return {
+server_auto_port.py:        "status": "healthy",
+server_auto_port.py:        "sandbox": "ready" if _sandbox_cache else "not_initialized",
+server_auto_port.py:        "model": MINIMAX_MODEL
+server_auto_port.py:    }
+server_auto_port.py:
+server_auto_port.py:def find_free_port(start_port=8001, max_attempts=10):
+server_auto_port.py:    """Encontra uma porta livre"""
+server_auto_port.py:    for port in range(start_port, start_port + max_attempts):
+server_auto_port.py:        try:
+server_auto_port.py:            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_auto_port.py:            sock.bind(('', port))
+server_auto_port.py:            sock.close()
+server_auto_port.py:            return port
+server_auto_port.py:        except OSError:
+server_auto_port.py:            continue
+server_auto_port.py:    return None
+server_auto_port.py:
+server_auto_port.py:if __name__ == "__main__":
+server_auto_port.py:    import uvicorn
+server_auto_port.py:
+server_auto_port.py:    # Encontrar porta livre
+server_auto_port.py:    port = find_free_port(8001)
+server_auto_port.py:
+server_auto_port.py:    if port is None:
+server_auto_port.py:        print("❌ Não foi possível encontrar uma porta livre entre 8001-8009")
+server_auto_port.py:        exit(1)
+server_auto_port.py:
+server_auto_port.py:    print("\n" + "="*70)
+server_auto_port.py:    print("🚀 Claude E2B API Server")
+server_auto_port.py:    print("="*70)
+server_auto_port.py:
+server_auto_port.py:    if port != 8001:
+server_auto_port.py:        print(f"\n⚠️  Porta 8001 ocupada, usando porta {port} em vez disso")
+server_auto_port.py:
+server_auto_port.py:    print(f"\n📍 Acesse:")
+server_auto_port.py:    print(f"   • Interface Web:  http://localhost:{port}")
+server_auto_port.py:    print(f"   • API Endpoint:   http://localhost:{port}/api/chat")
+server_auto_port.py:    print(f"   • Health Check:   http://localhost:{port}/api/health")
+server_auto_port.py:
+server_auto_port.py:    # Tentar obter IP local
+server_auto_port.py:    try:
+server_auto_port.py:        hostname = socket.gethostname()
+server_auto_port.py:        local_ip = socket.gethostbyname(hostname)
+server_auto_port.py:        print(f"\n🌐 Acesso via rede local:")
+server_auto_port.py:        print(f"   http://{local_ip}:{port}")
+server_auto_port.py:    except:
+server_auto_port.py:        pass
+server_auto_port.py:
+server_auto_port.py:    print("\n🔒 Todas as requisições processadas em sandbox E2B isolado")
+server_auto_port.py:    print("="*70 + "\n")
+server_auto_port.py:
+server_auto_port.py:    uvicorn.run(app, host="0.0.0.0", port=port, log_level="info")

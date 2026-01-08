@@ -1,0 +1,33 @@
+INFO:     Started server process [89504]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+
+============================================================
+🚀 Claude E2B API - Versão Simplificada
+============================================================
+
+📍 Acesse: http://localhost:8000
+🔒 Sandbox novo a cada request (mais confiável)
+============================================================
+
+INFO:     127.0.0.1:49372 - "GET /health HTTP/1.1" 200 OK
+
+📨 Recebido: Oi, você está funcionando?...
+✅ Sandbox: ibp2vpw3jev3izth7ieyw
+📦 Instalando...
+🤖 Chamando Claude...
+✅ Resposta: Olá! 👋 Sim, estou funcionando perfeitamente aqui! 🤖✨  \n\nSou a MiniMax-M2, sua assistente virtual. ...
+INFO:     127.0.0.1:49453 - "POST /chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49789 - "GET /chat HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:49789 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49791 - "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49791 - "GET /apple-touch-icon.png HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50012 - "GET / HTTP/1.1" 200 OK
+
+📨 Recebido: oi...
+✅ Sandbox: i8s953o3o67c25wv3wzvp
+📦 Instalando...
+🤖 Chamando Claude...
+✅ Resposta: Olá! Em que posso ajudá‑lo hoje?...
+INFO:     127.0.0.1:50012 - "POST /chat HTTP/1.1" 200 OK
