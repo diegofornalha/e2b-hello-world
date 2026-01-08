@@ -14,7 +14,8 @@ from e2b_code_interpreter import Sandbox
 
 load_dotenv()
 
-MINIMAX_TOKEN = "sk-cp-zcDlRVYnUrNf7aDw6DtpBNxSdxkAFooPcercwJicQ8O-sSMKXJHQQkR0jNFTeNjM1Jyz7yfnCQBDi_QD02lUDusjJbkHQvqayawc7mQQLKGOBwwZttlTKXc"
+# Exemplo: MINIMAX_TOKEN no .env ao invés de hardcoded
+MINIMAX_TOKEN = os.getenv("MINIMAX_TOKEN")
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])

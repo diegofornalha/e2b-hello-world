@@ -1,6 +1,0 @@
-e2b-code-interpreter
-anthropic
-python-dotenv
-fastapi
-uvicorn[standard]
-pydantic
