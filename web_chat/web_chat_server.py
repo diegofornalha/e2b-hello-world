@@ -5,14 +5,19 @@ Versão funcionando garantida!
 """
 
 import os
+from pathlib import Path
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from e2b_code_interpreter import Sandbox
 
-load_dotenv()
+# Carregar .env da raiz do projeto
+load_dotenv(Path(__file__).parent.parent / ".env")
+
+# Diretório atual (web_chat/)
+CURRENT_DIR = Path(__file__).parent
 
 # Exemplo: MINIMAX_TOKEN no .env ao invés de hardcoded
 MINIMAX_TOKEN = os.getenv("MINIMAX_TOKEN")
@@ -23,64 +28,10 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 class ChatRequest(BaseModel):
     message: str
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/")
 async def home():
-    return """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Claude E2B API</title>
-        <style>
-            body { font-family: system-ui; background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; padding: 2rem; margin: 0; }
-            .container { max-width: 700px; margin: 0 auto; background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-            h1 { color: #667eea; margin: 0 0 1rem 0; }
-            textarea { width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; min-height: 100px; resize: vertical; font-family: inherit; }
-            button { background: #667eea; color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-size: 1rem; cursor: pointer; margin-top: 1rem; }
-            button:hover { background: #5568d3; }
-            button:disabled { background: #9ca3af; cursor: wait; }
-            .response { margin-top: 1.5rem; padding: 1rem; background: #f9fafb; border-left: 4px solid #667eea; border-radius: 8px; display: none; }
-            .response.show { display: block; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>🚀 Claude E2B API</h1>
-            <p style="color: #10b981; margin-bottom: 1rem;">✅ Online - Rodando em sandbox E2B isolado</p>
-            <textarea id="msg" placeholder="Digite sua pergunta..."></textarea>
-            <button onclick="send()">Enviar</button>
-            <div id="resp" class="response">
-                <p id="text" style="margin: 0; line-height: 1.6; white-space: pre-wrap;"></p>
-            </div>
-        </div>
-        <script>
-            async function send() {
-                const msg = document.getElementById('msg').value;
-                if (!msg.trim()) return alert('Digite algo!');
-                const btn = event.target;
-                btn.disabled = true;
-                btn.textContent = 'Aguarde 10-20s...';
-                document.getElementById('resp').classList.remove('show');
-                try {
-                    const res = await fetch('/chat', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ message: msg })
-                    });
-                    const data = await res.json();
-                    document.getElementById('text').textContent = data.response;
-                    document.getElementById('resp').classList.add('show');
-                } catch (err) {
-                    alert('Erro: ' + err);
-                } finally {
-                    btn.disabled = false;
-                    btn.textContent = 'Enviar';
-                }
-            }
-        </script>
-    </body>
-    </html>
-    """
+    """Serve o arquivo HTML separado"""
+    return FileResponse(CURRENT_DIR / "index.html")
 
 @app.post("/chat")
 async def chat(req: ChatRequest):

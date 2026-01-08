@@ -19,14 +19,18 @@ Arquitetura:
 """
 
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from e2b_code_interpreter import Sandbox
 
-load_dotenv()
+# Carregar .env da raiz do projeto
+load_dotenv(Path(__file__).parent.parent / ".env")
 
-# Credenciais Minimax
+# Credenciais Minimax (do .env)
+MINIMAX_TOKEN = os.getenv("MINIMAX_TOKEN")
+
 MINIMAX_CONFIG = {
-    "ANTHROPIC_AUTH_TOKEN": "sk-cp-zcDlRVYnUrNf7aDw6DtpBNxSdxkAFooPcercwJicQ8O-sSMKXJHQQkR0jNFTeNjM1Jyz7yfnCQBDi_QD02lUDusjJbkHQvqayawc7mQQLKGOBwwZttlTKXc",
+    "ANTHROPIC_AUTH_TOKEN": MINIMAX_TOKEN,
     "ANTHROPIC_MODEL": "minimax/minimax-m2",
     "ANTHROPIC_BASE_URL": "https://api.minimax.io/anthropic",
 }

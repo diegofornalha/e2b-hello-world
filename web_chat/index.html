@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude E2B API</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            padding: 2rem;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 { color: #667eea; margin: 0 0 0.5rem 0; }
+        .status { color: #10b981; margin-bottom: 1.5rem; }
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+        button:hover { background: #5568d3; }
+        button:disabled { background: #9ca3af; cursor: wait; }
+
+        .response {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f9fafb;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            display: none;
+        }
+        .response.show { display: block; }
+
+        /* Markdown styles */
+        .markdown-content h1 { font-size: 1.5rem; margin: 1rem 0 0.5rem; color: #1f2937; }
+        .markdown-content h2 { font-size: 1.3rem; margin: 1rem 0 0.5rem; color: #374151; }
+        .markdown-content h3 { font-size: 1.1rem; margin: 0.8rem 0 0.4rem; color: #4b5563; }
+        .markdown-content p { margin: 0.5rem 0; line-height: 1.6; }
+        .markdown-content ul, .markdown-content ol {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+        .markdown-content li { margin: 0.3rem 0; line-height: 1.5; }
+        .markdown-content code {
+            background: #e5e7eb;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.9em;
+        }
+        .markdown-content pre {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .markdown-content blockquote {
+            border-left: 3px solid #667eea;
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+            color: #6b7280;
+        }
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        .markdown-content th {
+            background: #f3f4f6;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+        }
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Claude E2B API</h1>
+        <p class="status">Online - Rodando em sandbox E2B isolado</p>
+
+        <textarea id="msg" placeholder="Digite sua pergunta..."></textarea>
+        <button id="btn" onclick="send()">Enviar</button>
+
+        <div id="resp" class="response">
+            <div id="content" class="markdown-content"></div>
+        </div>
+    </div>
+
+    <script>
+        async function send() {
+            const msg = document.getElementById('msg').value;
+            if (!msg.trim()) return alert('Digite algo!');
+
+            const btn = document.getElementById('btn');
+            const resp = document.getElementById('resp');
+            const content = document.getElementById('content');
+
+            btn.disabled = true;
+            btn.textContent = 'Aguarde 10-20s...';
+
+            // Mostrar loading
+            resp.classList.add('show');
+            content.innerHTML = '<div class="loading"><div class="spinner"></div>Processando no sandbox...</div>';
+
+            try {
+                const res = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg })
+                });
+                const data = await res.json();
+
+                // Renderizar markdown
+                content.innerHTML = marked.parse(data.response);
+
+            } catch (err) {
+                content.innerHTML = '<p style="color: #ef4444;">Erro: ' + err + '</p>';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Enviar';
+            }
+        }
+
+        // Enviar com Ctrl+Enter
+        document.getElementById('msg').addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') send();
+        });
+    </script>
+</body>
+</html>
