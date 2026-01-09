@@ -1,9 +1,3 @@
-"""
-Schemas Pydantic para validação de request/response
-
-Define os contratos da API HTTP com validação automática.
-"""
-
 from pydantic import BaseModel, Field
 
 class ChatRequest(BaseModel):

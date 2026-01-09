@@ -1,13 +1,7 @@
-"""
-Aplicação FastAPI
-
-Cria e configura a instância FastAPI com middleware CORS e rotas.
-"""
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from core.config import SERVER_CONFIG
+from claude_mini_sdk.config import SERVER_CONFIG
 from .routes import router
 
 def create_app() -> FastAPI:

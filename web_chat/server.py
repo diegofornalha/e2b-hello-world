@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-"""
-Ponto de entrada do servidor HTTP
-
-Script principal para iniciar o servidor uvicorn.
-"""
-
 import uvicorn
-from core.config import SERVER_CONFIG
+from claude_mini_sdk.config import SERVER_CONFIG
 
 def main():
     """Inicia servidor web com uvicorn"""

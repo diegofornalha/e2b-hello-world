@@ -1,14 +1,7 @@
 #!/usr/bin/env python3
-"""
-Chat CLI com Minimax/Claude rodando em E2B Sandbox
 
-Arquitetura:
-- Reutiliza módulos compartilhados de core/
-- Loop interativo específico para terminal
-"""
-
-from core.config import MINIMAX_CONFIG, E2B_CONFIG, validate_config
-from core.sandbox_manager import SandboxManager
+from claude_mini_sdk.config import MINIMAX_CONFIG, E2B_CONFIG, validate_config
+from claude_mini_sdk.sandbox_manager import SandboxManager
 
 # Validação automática ao importar config
 validate_config()

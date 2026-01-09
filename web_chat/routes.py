@@ -1,16 +1,10 @@
-"""
-Rotas HTTP da API
-
-Define os endpoints FastAPI para chat, health check e serve o frontend.
-"""
-
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from pathlib import Path
 
 from .models import ChatRequest, ChatResponse, HealthResponse
-from core.sandbox_manager import SandboxManager
-from core.config import MINIMAX_CONFIG
+from claude_mini_sdk.sandbox_manager import SandboxManager
+from claude_mini_sdk.config import MINIMAX_CONFIG
 
 router = APIRouter()
 CURRENT_DIR = Path(__file__).parent
