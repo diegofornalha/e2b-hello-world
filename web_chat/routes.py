@@ -11,15 +11,6 @@ CURRENT_DIR = Path(__file__).parent
 
 @router.get("/")
 async def home():
-    """
-    Serve arquivo HTML do frontend
-
-    Returns:
-        FileResponse: index.html com interface de chat
-
-    Raises:
-        HTTPException: 404 se index.html não existir
-    """
     html_path = CURRENT_DIR / "static" / "index.html"
     if not html_path.exists():
         raise HTTPException(
@@ -30,25 +21,7 @@ async def home():
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
-    """
-    Processa mensagem do usuário usando sandbox E2B + Minimax API
 
-    Fluxo:
-    1. Cria novo sandbox E2B (isolamento total)
-    2. Instala dependências (Anthropic SDK)
-    3. Configura variáveis de ambiente
-    4. Executa código Python que chama Minimax API
-    5. Retorna resposta do modelo
-
-    Args:
-        req: ChatRequest com mensagem do usuário
-
-    Returns:
-        ChatResponse: Resposta do modelo + sandbox_id
-
-    Raises:
-        HTTPException: 500 se falhar ao criar sandbox ou processar mensagem
-    """
     try:
         # Criar sandbox novo a cada request (mais confiável)
         with SandboxManager.create_sandbox() as sandbox:
@@ -82,12 +55,6 @@ async def chat(req: ChatRequest):
 
 @router.get("/health", response_model=HealthResponse)
 async def health():
-    """
-    Health check endpoint
-
-    Returns:
-        HealthResponse: Status do serviço e modelo configurado
-    """
     return HealthResponse(
         status="ok",
         model=MINIMAX_CONFIG["model"]

@@ -3,7 +3,6 @@ import uvicorn
 from claude_mini_sdk.config import SERVER_CONFIG
 
 def main():
-    """Inicia servidor web com uvicorn"""
     print("\n" + "=" * 60)
     print("🚀 Claude E2B API - Versão Modular 2.0")
     print("=" * 60)

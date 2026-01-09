@@ -7,12 +7,6 @@ from claude_mini_sdk.sandbox_manager import SandboxManager
 validate_config()
 
 def chat_loop(sandbox):
-    """
-    Loop interativo de chat no terminal
-
-    Args:
-        sandbox: Instância do sandbox E2B já configurado
-    """
     print("\n" + "=" * 60)
     print("💬 CHAT COM CLAUDE/MINIMAX (rodando no E2B Sandbox)")
     print("=" * 60)
